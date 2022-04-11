@@ -62,6 +62,7 @@ public class TSeckillVouchersServiceImpl extends ServiceImpl<TSeckillVouchersMap
 
     @SneakyThrows
     @Override
+    @Transactional(rollbackFor = { SQLException.class })
     public Boolean doSeckill(Integer seckillVouchersId, Integer userId) {
         // 基本参数校验
         Assert.isFalse(seckillVouchersId == null || seckillVouchersId < 0, "请选择需要抢购的代金券");
@@ -83,8 +84,7 @@ public class TSeckillVouchersServiceImpl extends ServiceImpl<TSeckillVouchersMap
             userId = Integer.valueOf(RandomUtil.randomNumbers(9));
         }
         // 判断登录用户是否已抢到(一个用户针对这次活动只能买一次)
-        TOrders order = tOrdersService.findDinerOrder(userId,
-                seckillVouchers.getFkVoucherId());
+        TOrders order = tOrdersService.findDinerOrder(userId, seckillVouchers.getFkVoucherId());
         Assert.isFalse(order != null, "该用户已抢到该代金券，无需再抢");
         String lockName = "seckillVouchersId:" + seckillVouchersId + Constant.REDIS_VOUCHER_KEY + voucherId + ":" + userId;
         // 加锁并设置失效时间

@@ -23,7 +23,6 @@
         <mysql.version>8.0.28</mysql.version>
         <hutool.version>5.7.21</hutool.version>
         <guava.version>31.0.1-jre</guava.version>
-        <user.agent.version>1.21</user.agent.version>
         <lombok.version>1.18.22</lombok.version>
         <mybatis.plus.version>3.4.2</mybatis.plus.version>
         <mybatisplus.generator.version>3.4.1</mybatisplus.generator.version>
@@ -145,13 +144,7 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-            <!-- 解析 UserAgent 信息 -->
-            <dependency>
-                <groupId>eu.bitwalker</groupId>
-                <artifactId>UserAgentUtils</artifactId>
-                <version>${user.agent.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+            <!-- redisson -->
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
