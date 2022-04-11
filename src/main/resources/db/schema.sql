@@ -58,3 +58,19 @@ CREATE TABLE `t_user` (
                           `is_valid` int DEFAULT '0',
                           PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS `t_follow`;
+CREATE TABLE `t_follow` (
+                            `id`  int(11) NOT NULL AUTO_INCREMENT ,
+                            `user_id`  int(11) NULL DEFAULT NULL COMMENT '用户' ,
+                            `follow_user_id`  int(11) NULL DEFAULT NULL COMMENT '粉丝' ,
+                            `is_followed` int DEFAULT '0' COMMENT '0 关注 1取消关注',
+                            `is_valid`  INT(1) NULL DEFAULT '0' ,
+                            `create_date`  datetime NULL DEFAULT NULL ,
+                            `update_date`  datetime NULL DEFAULT NULL ,
+                            PRIMARY KEY (`id`)
+)
+    ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1
+ROW_FORMAT=COMPACT;;

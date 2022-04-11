@@ -3,6 +3,7 @@ package com.ocrud.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ public abstract class BaseEntity implements Serializable {
     @TableField(value = "update_date", fill = FieldFill.UPDATE)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     @JSONField(format = "yyyy-MM-dd HH:mm")
+    @JsonInclude(value= JsonInclude.Include.NON_NULL)
     public Date updateDate; // 更新日期
 
     @TableLogic
