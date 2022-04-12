@@ -34,6 +34,5 @@ public abstract class BaseEntity implements Serializable {
     @JsonInclude(value= JsonInclude.Include.NON_NULL)
     public Date updateDate; // 更新日期
 
-    @TableLogic
     private Integer isValid;
 }
