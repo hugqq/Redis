@@ -7,7 +7,6 @@
             <result column="id" property="id"/>
             <result column="create_date" property="createDate"/>
             <result column="update_date" property="updateDate"/>
-            <result column="remarks" property="remarks"/>
             <result column="title" property="title"/>
             <result column="thumbnail" property="thumbnail"/>
             <result column="amount" property="amount"/>
@@ -27,7 +26,6 @@
             id,
             create_date,
             update_date,
-            remarks,
         title, thumbnail, amount, price, status, start_use_time, expire_time, stock, stock_left, description, clause, is_valid
     </sql>
 

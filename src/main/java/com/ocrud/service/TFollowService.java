@@ -6,10 +6,22 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.ocrud.entity.TFollow;
 
+import java.util.Set;
+
 
 public interface TFollowService extends IService<TFollow> {
-    Dict follow(Integer userId,Integer followUserId, Integer isFollowed);
+    Dict follow(TFollow tFollow);
 
-    Dict findCommonsFriends(Integer userId, Integer followUserId);
+    Dict findCommonsFriends(TFollow tFollow);
+
+    Set<Integer> findFollowing(Integer userId);
+
+    Set<Integer> findFollowers(Integer userId);
+
+    Dict findFollowing(TFollow tFollow);
+
+    Dict findFollowers(TFollow tFollow);
+
+    Dict isFollowed(TFollow tFollow);
 }
 

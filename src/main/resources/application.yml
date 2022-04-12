@@ -1,4 +1,6 @@
 spring:
+  main:
+    banner-mode: off
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/redis?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
     username: root
@@ -59,7 +61,9 @@ spring:
     type: redis
 logging:
   level:
-    com.ocrud: debug
+    com.ocrud:
+      - info
+      - error
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml,classpath:/com/ocrud/mapper/xml/*.xml
   #实体扫描，多个package用逗号或者分号分隔
@@ -81,6 +85,7 @@ mybatis-plus:
       db-type: mysql
     #刷新mapper 调试神器
     refresh: true
+    banner: false
   # 原生配置
   configuration:
     map-underscore-to-camel-case: true

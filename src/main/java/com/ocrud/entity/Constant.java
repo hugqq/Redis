@@ -1,5 +1,8 @@
 package com.ocrud.entity;
 
+/**
+ * @author glow
+ */
 public class Constant {
 
     public static final String REDIS_VOUCHER_KEY = "vouchers:";
@@ -11,6 +14,9 @@ public class Constant {
      * keyId是哪个用户的粉丝
      */
     public static final String REDIS_FOLLOWERS_KEY = "followers:";
+
+
+    public static final String REDIS_FOLLOWING_FEEDS_KEY = "followingFeeds:";
 
     public static final String RABBIT_EXCHANGE_NAME = "kill-exchange1";
     public static final String RABBIT_QUEUE_NAME ="kill-queue1";

@@ -46,7 +46,7 @@ CREATE TABLE `t_seckill_vouchers` (
                                       `update_date` datetime DEFAULT NULL,
                                       `is_valid` int DEFAULT '0',
                                       PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
 
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
@@ -70,7 +70,18 @@ CREATE TABLE `t_follow` (
                             `update_date`  datetime NULL DEFAULT NULL ,
                             PRIMARY KEY (`id`)
 )
-    ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=1
-ROW_FORMAT=COMPACT;;
+ENGINE=InnoDB DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ROW_FORMAT=COMPACT;
+
+DROP TABLE IF EXISTS `t_feeds`;
+CREATE TABLE `t_feeds` (
+                           `id`  int(11) NOT NULL AUTO_INCREMENT ,
+                           `content`  varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '内容' ,
+                           `fk_user_id`  int(11) NULL DEFAULT NULL ,
+                           `praise_amount`  int(11) NULL DEFAULT NULL COMMENT '点赞数量' ,
+                           `comment_amount`  int(11) NULL DEFAULT NULL COMMENT '评论数量' ,
+                           `create_date`  datetime NULL DEFAULT NULL ,
+                           `update_date`  datetime NULL DEFAULT NULL ,
+                           `is_valid`  tinyint(1) NULL DEFAULT NULL ,
+                           PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1 ROW_FORMAT=COMPACT;
