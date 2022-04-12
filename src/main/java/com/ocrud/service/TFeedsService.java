@@ -1,6 +1,7 @@
 package com.ocrud.service;
 
 
+import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -11,7 +12,7 @@ public interface TFeedsService extends IService<TFeeds> {
 
     void addFollowingFeeds(Integer userId, Integer followingUserId, int type);
 
-    void delete(Integer id, Integer userId);
+    Dict delete(Integer id, Integer userId);
 
     Page<TFeeds> selectForPage(Integer page, Integer pageSize, Integer userId);
 }

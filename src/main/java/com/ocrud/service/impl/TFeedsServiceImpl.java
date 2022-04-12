@@ -2,6 +2,7 @@ package com.ocrud.service.impl;
 
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,6 +22,7 @@ import com.ocrud.entity.TFeeds;
 import com.ocrud.mapper.TFeedsMapper;
 import com.ocrud.service.TFeedsService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +54,7 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
      * 变更 Feed
      *
      * @param followingUserId 关注的好友的 ID
-     * @param userId          登录用户 token
+     * @param userId          登录用户
      * @param type            1 关注 0 取关
      */
     @Override
@@ -64,7 +66,7 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
         if (followingFeeds == null || followingFeeds.isEmpty()) {
             return;
         }
-        // 我关注的好友的 FeedsKey
+        // 我关注的 FeedsKey
         String key = Constant.REDIS_FOLLOWING_FEEDS_KEY + userId;
         // 取关
         if (type == 0) {
@@ -72,13 +74,18 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
             redisTemplate.opsForZSet().remove(key, feedIds.toArray(new Integer[]{}));
             // 关注
         } else {
-            Set<ZSetOperations.TypedTuple> typedTuples = followingFeeds.stream()
-                        .map(feed -> new DefaultTypedTuple<>(feed.getId(), (double) feed.getCreateDate().getTime())).collect(Collectors.toSet());
+            Set<ZSetOperations.TypedTuple> typedTuples = followingFeeds.stream().map(feed -> {
+                if (feed.getCreateDate() == null) {
+                    feed.setCreateDate(new Date());
+                }
+                return new DefaultTypedTuple<>(feed.getId(), (double) feed.getCreateDate().getTime());
+            }).collect(Collectors.toSet());
             redisTemplate.opsForZSet().add(key, typedTuples);
         }
     }
+
     @Override
-    public void delete(Integer id, Integer userId) {
+    public Dict delete(Integer id, Integer userId) {
         // 请选择要删除的 Feed
         Assert.isFalse(id == null || id < 1, "请选择要删除的Feed");
         // 获取登录用户
@@ -86,17 +93,19 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
         TFeeds feeds = getById(id);
         // 判断 Feed 是否已被删除且只能删除自己的 Feed
         Assert.isFalse(feeds == null, "该Feed已被删除");
-        Assert.isFalse(!feeds.getFkUserId().equals(userId), "只能删除自己的Feed");
+        Assert.isFalse(feeds.getFkUserId().equals(userId), "只能删除自己的Feed");
         // 删除
-        if (!removeById(id)) {
-            return;
+        if (removeById(id)) {
+            // 将内容从粉丝的集合中删除  -- 异步消息队列优化
+            Set<Integer> followersIds = tFollowService.findFollowers(userId);
+            followersIds.forEach(follower -> {
+                String key = Constant.REDIS_FOLLOWING_FEEDS_KEY.concat(follower + "");
+                redisTemplate.opsForZSet().remove(key, feeds.getId());
+            });
+            return Dict.create().set("code", "200").set("msg", "删除成功");
+        }else {
+            return Dict.create().set("code", "500").set("msg", "删除失败");
         }
-        // 将内容从粉丝的集合中删除  -- 异步消息队列优化
-        Set<Integer> followersIds = tFollowService.findFollowers(userId);
-        followersIds.forEach(follower -> {
-            String key = Constant.REDIS_FOLLOWING_FEEDS_KEY.concat(follower + "");
-            redisTemplate.opsForZSet().remove(key, feeds.getId());
-        });
     }
 
     /**
@@ -126,8 +135,8 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
         Map<Integer, TUser> userMap = tUserService.list().stream().collect(Collectors.toMap(TUser::getId, Function.identity()));
         // 查询结果
         Page<TFeeds> result = page(new Page<>(page, pageSize), new LambdaQueryWrapper<TFeeds>().in(TFeeds::getId, feedIds));
-        // 添加用户 ID 至集合，顺带将 Feeds 转为 VO 对象
-        result.getRecords().stream().map(feed -> feed.setUser(userMap.get(feed.getFkUserId())));
+        // 翻译字典
+        result.getRecords().forEach(feed -> feed.setUser(userMap.get(feed.getFkUserId())));
         return result;
     }
 

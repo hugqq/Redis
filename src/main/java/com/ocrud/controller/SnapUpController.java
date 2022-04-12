@@ -33,6 +33,8 @@ public class SnapUpController {
 
     /**
      * 模拟 添加或更改时候 添加优惠券的库存缓存
+     * seckillVouchersId 活动id
+     * voucherId 优惠券id
      */
     @RequestMapping("/addVouchersCache")
     public void addVouchersCache(Integer seckillVouchersId, Integer voucherId) {
@@ -49,6 +51,8 @@ public class SnapUpController {
 
     /**
      * 抢购优惠券
+     * seckillVouchersId 活动id
+     * userId 登录用户
      */
     @RequestMapping("/doSeckill")
     public Boolean doSeckill(Integer seckillVouchersId, Integer userId) {

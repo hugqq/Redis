@@ -23,6 +23,7 @@ public class TFeeds extends BaseEntity {
 
     private Integer fkUserId;
 
+
     /**
      * 点赞数量
      */
@@ -32,6 +33,12 @@ public class TFeeds extends BaseEntity {
      * 评论数量
      */
     private Integer commentAmount;
+
+    /**
+     * 参数
+     */
+    @TableField(exist = false)
+    private Integer userId;
 
     @TableField(exist = false)
     private TUser user;

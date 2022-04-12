@@ -18,6 +18,8 @@ INSERT INTO  `t_user` (`id`,`name`, `token`, `create_date`, `update_date`, `is_v
 INSERT INTO  `t_user` (`id`,`name`, `token`, `create_date`, `update_date`, `is_valid`) VALUES (9,'吴九', 'wj', now(), NULL, 0);
 INSERT INTO  `t_user` (`id`,`name`, `token`, `create_date`, `update_date`, `is_valid`) VALUES (10,'郑十', 'zs', now(), NULL, 0);
 
+INSERT INTO `t_feeds` (`id`, `content`, `fk_user_id`, `praise_amount`, `comment_amount`, `create_date`, `update_date`, `is_valid`) VALUES (1, '啦啦啦啦啦1', 1, 0, 0, now(), NULL, 0);
+INSERT INTO `t_feeds` (`id`, `content`, `fk_user_id`, `praise_amount`, `comment_amount`, `create_date`, `update_date`, `is_valid`) VALUES (2, '啦啦啦啦啦2', 1, 0, 0, now(), NULL, 0);
 
 
 
