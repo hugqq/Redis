@@ -85,3 +85,17 @@ CREATE TABLE `t_feeds` (
                            PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1 ROW_FORMAT=COMPACT;
+
+
+DROP TABLE IF EXISTS `t_user_points`;
+CREATE TABLE `t_user_points` (
+                                 `id`  int(11) NOT NULL AUTO_INCREMENT ,
+                                 `fk_user_id`  int(11) NULL DEFAULT NULL ,
+                                 `points`  int(11) NULL DEFAULT NULL ,
+                                 `types`  int(11) NULL DEFAULT NULL COMMENT '积分类型：0=签到，1=关注好友，2=添加评论，3=点赞商户' ,
+                                 `is_valid`  int(11) NULL DEFAULT NULL ,
+                                 `create_date`  datetime NULL DEFAULT NULL ,
+                                 `update_date`  datetime NULL DEFAULT NULL ,
+                                 PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1 ROW_FORMAT=COMPACT;

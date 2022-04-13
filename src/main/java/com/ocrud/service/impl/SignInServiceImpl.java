@@ -175,12 +175,8 @@ public class SignInServiceImpl implements SignInService {
         Date date = getDate(dateStr);
         // 构建 Key
         String signKey = buildSignKey(userId, date);
-        Map<String, Boolean> info = new HashMap<>();
-        List<String> keys = Arrays.asList(signKey);
-        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>("local result = tonumber(redis.call('BITPOS', KEYS[1], 1));\n" + "if (result > -1) then\n" + "    return result;\n" + "end;\n" + "return -1;\n");
-        redisScript.setResultType(Long.class);
-        Long execute = (Long) redisTemplate.execute(redisScript, keys) + 1;
-        if (execute != -1) {
+        Long execute = (Long) redisTemplate.execute((RedisCallback<Long>) con -> con.bitPos(signKey.getBytes(), true))+1;
+        if (execute > -1) {
             LocalDateTime dateTime = LocalDateTimeUtil.of(date).withDayOfMonth(Math.toIntExact(execute));
             String format = DateUtil.format(dateTime, "yyyy-MM-dd");
             return Dict.create().set("data", format);
