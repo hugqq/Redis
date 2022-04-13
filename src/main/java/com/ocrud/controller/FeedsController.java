@@ -10,6 +10,7 @@ import com.ocrud.entity.TFeeds;
 import com.ocrud.service.TFeedsService;
 
 /**
+ * Feed流系统
  * @author ocrud
  * @since 2022-04-12
  */
