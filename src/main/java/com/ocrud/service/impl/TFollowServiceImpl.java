@@ -154,8 +154,8 @@ public class TFollowServiceImpl extends ServiceImpl<TFollowMapper, TFollow> impl
     public Dict isFollowed(TFollow tFollow) {
         Integer userId = tFollow.getUserId();
         Integer followUserId = tFollow.getFollowUserId();
-        Set<Integer> ids = redisTemplate.opsForSet().members(Constant.REDIS_FOLLOWERS_KEY + followUserId);
-        return Dict.create().set("code", "200").set("msg", "查询成功").set("data", ids.contains(userId));
+        Boolean member = redisTemplate.opsForSet().isMember(Constant.REDIS_FOLLOWERS_KEY + followUserId, userId);
+        return Dict.create().set("code", "200").set("msg", "查询成功").set("data", member);
     }
 
 
