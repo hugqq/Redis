@@ -21,8 +21,11 @@ public class Constant {
     /**
      * points key
      */
-    public static final String REDIS_POINTS_KEY = "points:";
-
+    public static final String REDIS_POINTS_KEY = "points";
+    /**
+     * location key
+     */
+    public static final String REDIS_LOCATION_KEY = "user:location";
     /**
      * rabbitmq exchange
      */
