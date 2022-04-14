@@ -77,7 +77,7 @@ public class TUserPointsServiceImpl extends ServiceImpl<TUserPointsMapper, TUser
      */
     @Override
     public List<PointsRankVO> findTopN(Integer userId, Integer top) {
-        List<PointsRankVO> topN = baseMapper.findTopN57(top);
+        List<PointsRankVO> topN = baseMapper.findTopN(top);
         if (topN == null || topN.isEmpty()) {
             return Lists.newArrayList();
         }
