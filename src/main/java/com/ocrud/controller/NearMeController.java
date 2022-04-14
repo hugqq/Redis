@@ -6,22 +6,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 附近的人
+ * @author glow
+ */
 @RestController
 public class NearMeController {
     @Autowired
     private NearMeService nearMeService;
 
+    /**
+     * 增加经纬度
+     */
     @RequestMapping("addUserLocation")
     public void addUserLocation(Integer userId, Float lon, Float lat) {
         nearMeService.addUserLocation(userId, lon, lat);
     }
-
+    /**
+     * 查找附近的人
+     */
     @RequestMapping("findNearMe")
     public List<NearMeUserVO> findNearMe(Integer userId, Integer radius, Float lon, Float lat) {
         return nearMeService.findNearMe(userId, radius, lon, lat);
     }
-
+    /**
+     * 计算俩人之间的距离
+     */
+    @RequestMapping("distance")
+    public String distance(Integer userId,Integer toUserId) {
+        return nearMeService.distance(userId, toUserId);
+    }
 }

@@ -3,22 +3,16 @@ package com.ocrud.service.impl;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.NumberUtil;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.ocrud.entity.Constant;
 import com.ocrud.entity.NearMeUserVO;
 import com.ocrud.service.NearMeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Circle;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.GeoResults;
-import org.springframework.data.geo.Point;
+import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class NearMeServiceImpl implements NearMeService {
@@ -97,4 +91,17 @@ public class NearMeServiceImpl implements NearMeService {
         });
         return list;
     }
+    /**
+     * 计算两点之间的距离
+     * GEODIST key 天安门 长城 [m|km|ft|mi]
+     */
+    @Override
+    public String distance(Integer userId, Integer toUserId) {
+        Assert.isFalse(userId == null, "获取用户失败！");
+        Assert.isFalse(toUserId == null, "获取对象失败！");
+        String key = Constant.REDIS_LOCATION_KEY;
+        Distance distance = redisTemplate.opsForGeo().distance(key, userId, toUserId, Metrics.MILES);
+        return  NumberUtil.round(distance.getValue(), 1).toString() + "m";
+    }
+
 }
