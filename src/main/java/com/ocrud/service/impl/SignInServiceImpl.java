@@ -7,8 +7,9 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.collect.Lists;
 import com.ocrud.service.SignInService;
-import org.assertj.core.util.Lists;
+import com.ocrud.service.TUserPointsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.core.RedisCallback;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Service
 public class SignInServiceImpl implements SignInService {
@@ -27,6 +27,8 @@ public class SignInServiceImpl implements SignInService {
     private RedisTemplate redisTemplate;
     @Autowired
     private DefaultRedisScript redisScript;
+    @Autowired
+    private TUserPointsService tUserPointsService;
 
     /**
      * 用户签到
@@ -55,6 +57,7 @@ public class SignInServiceImpl implements SignInService {
         redisTemplate.opsForValue().setBit(signKey, offset, true);
         // 统计连续签到次数
         int count = getContinuousSignCount(userId, date);
+        tUserPointsService.addPoints(count,userId);
         return count;
     }
 
@@ -191,7 +194,7 @@ public class SignInServiceImpl implements SignInService {
     @Override
     public Dict getTodaySignUser(String dateStr){
         Set<String> keys = redisTemplate.keys("user:sign".concat("*"));
-        List<Integer> userIds = Lists. newArrayList();
+        List<Integer> userIds = Lists.newArrayList();
         if (CollUtil.isEmpty(keys)){
             return Dict.create().set("data", new ArrayList<>());
         }

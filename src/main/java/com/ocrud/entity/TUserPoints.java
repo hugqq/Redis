@@ -24,6 +24,4 @@ public class TUserPoints extends BaseEntity {
     */
     private Integer types;
 
-    private Integer isValid;
-
 }
