@@ -1,6 +1,7 @@
 package com.ocrud.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,7 +23,8 @@ import java.util.Date;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TVouchers extends BaseEntity {
+@TableName("t_vouchers")
+public class Vouchers extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

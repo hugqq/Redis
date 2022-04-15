@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ocrud.entity.TVouchers;
-import com.ocrud.mapper.TVouchersMapper;
-import com.ocrud.service.TVouchersService;
+import com.ocrud.entity.Vouchers;
+import com.ocrud.mapper.VouchersMapper;
+import com.ocrud.service.VouchersService;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import com.ocrud.service.TVouchersService;
 
 @Transactional
 @Service
-public class TVouchersServiceImpl extends ServiceImpl<TVouchersMapper, TVouchers> implements TVouchersService {
+public class VouchersServiceImpl extends ServiceImpl<VouchersMapper, Vouchers> implements VouchersService {
 
     @Override
     public int stockDecrease(Integer fkVoucherId) {

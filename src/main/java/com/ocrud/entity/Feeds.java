@@ -1,7 +1,7 @@
 package com.ocrud.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.ocrud.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -12,7 +12,8 @@ import lombok.experimental.Accessors;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TFeeds extends BaseEntity {
+@TableName("t_feeds")
+public class Feeds extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,10 +21,10 @@ public class TFeeds extends BaseEntity {
      * 内容
      */
     private String content;
-
+    /**
+     * userId
+     */
     private Integer fkUserId;
-
-
     /**
      * 点赞数量
      */
@@ -33,7 +34,6 @@ public class TFeeds extends BaseEntity {
      * 评论数量
      */
     private Integer commentAmount;
-
     /**
      * 参数
      */
@@ -41,5 +41,5 @@ public class TFeeds extends BaseEntity {
     private Integer userId;
 
     @TableField(exist = false)
-    private TUser user;
+    private User user;
 }

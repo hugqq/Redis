@@ -1,5 +1,6 @@
 package com.ocrud.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ocrud.entity.BaseEntity;
 import lombok.*;
@@ -16,7 +17,8 @@ import java.util.Date;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TSeckillVouchers extends BaseEntity {
+@TableName("t_seckill_vouchers")
+public class SeckillVouchers extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

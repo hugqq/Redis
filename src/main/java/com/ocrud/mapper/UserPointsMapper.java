@@ -1,7 +1,7 @@
 package com.ocrud.mapper;
 
 import com.ocrud.entity.PointsRankVO;
-import com.ocrud.entity.TUserPoints;
+import com.ocrud.entity.UserPoints;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -12,12 +12,12 @@ import java.util.List;
 
 
 @Mapper
-public interface TUserPointsMapper extends BaseMapper<TUserPoints> {
+public interface UserPointsMapper extends BaseMapper<UserPoints> {
 
     // 添加积分
     @Insert("insert into t_user_points (fk_user_id, points, types, is_valid, create_date, update_date) " +
             " values (#{fkUserId}, #{points}, #{types}, 0, now(), now())")
-    boolean add(TUserPoints tUserPoints);
+    boolean add(UserPoints tUserPoints);
 
 
     /**

@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import com.ocrud.entity.TFeeds;
-import com.ocrud.service.TFeedsService;
+import com.ocrud.entity.Feeds;
+import com.ocrud.service.FeedsService;
 
 /**
  * Feed流系统
@@ -19,20 +19,20 @@ import com.ocrud.service.TFeedsService;
 @Slf4j
 public class FeedsController {
 
-    private final TFeedsService tFeedsService;
+    private final FeedsService feedsService;
 
-    public FeedsController(TFeedsService tFeedsService) {
-        this.tFeedsService = tFeedsService;
+    public FeedsController(FeedsService feedsService) {
+        this.feedsService = feedsService;
     }
 
     @RequestMapping("selectFeedPage")
-    public Page<TFeeds> selectFeedPage(TFeeds tFeeds) {
-        return tFeedsService.selectForPage(1, 10, tFeeds.getUserId());
+    public Page<Feeds> selectFeedPage(Feeds feeds) {
+        return feedsService.selectForPage(1, 10, feeds.getUserId());
     }
 
     @RequestMapping("delete")
-    public Dict delete(TFeeds tFeeds) {
-      return  tFeedsService.delete(tFeeds.getId(), tFeeds.getFkUserId());
+    public Dict delete(Feeds feeds) {
+      return  feedsService.delete(feeds.getId(), feeds.getFkUserId());
     }
 
 }

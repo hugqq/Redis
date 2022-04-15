@@ -5,15 +5,15 @@ import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.ocrud.entity.TFeeds;
+import com.ocrud.entity.Feeds;
 
 
-public interface TFeedsService extends IService<TFeeds> {
+public interface FeedsService extends IService<Feeds> {
 
     void addFollowingFeeds(Integer userId, Integer followingUserId, int type);
 
     Dict delete(Integer id, Integer userId);
 
-    Page<TFeeds> selectForPage(Integer page, Integer pageSize, Integer userId);
+    Page<Feeds> selectForPage(Integer page, Integer pageSize, Integer userId);
 }
 

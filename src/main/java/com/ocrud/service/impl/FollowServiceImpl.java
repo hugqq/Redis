@@ -6,17 +6,17 @@ import cn.hutool.core.lang.Dict;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ocrud.entity.Constant;
-import com.ocrud.entity.TUser;
-import com.ocrud.service.TFeedsService;
-import com.ocrud.service.TUserService;
+import com.ocrud.entity.User;
+import com.ocrud.mapper.FollowMapper;
+import com.ocrud.service.FeedsService;
+import com.ocrud.service.FollowService;
+import com.ocrud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ocrud.entity.TFollow;
-import com.ocrud.mapper.TFollowMapper;
-import com.ocrud.service.TFollowService;
+import com.ocrud.entity.Follow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,29 +33,29 @@ import java.util.Set;
 
 @Transactional
 @Service
-public class TFollowServiceImpl extends ServiceImpl<TFollowMapper, TFollow> implements TFollowService {
+public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> implements FollowService {
 
     @Autowired
-    private TUserService tUserService;
+    private UserService tUserService;
     @Autowired
-    private TFeedsService tFeedsService;
+    private FeedsService tFeedsService;
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
-    public Dict follow(TFollow tFollow) {
+    public Dict follow(Follow tFollow) {
         Integer followUserId = tFollow.getFollowUserId();
         Integer userId = tFollow.getUserId();
         Integer isFollowed = tFollow.getIsFollowed();
         Assert.isFalse(followUserId == null || followUserId < 1, "请选择要关注的人");
         // 获取登录用户信息
-        TUser tUser = tUserService.getById(userId);
+        User tUser = tUserService.getById(userId);
         // 获取当前登录用户与需要关注用户的关注信息
-        TFollow follow = getOne(new LambdaQueryWrapper<TFollow>().eq(TFollow::getUserId, userId).eq(TFollow::getFollowUserId, followUserId));
+        Follow follow = getOne(new LambdaQueryWrapper<Follow>().eq(Follow::getUserId, userId).eq(Follow::getFollowUserId, followUserId));
         // 如果没有关注信息，且要进行关注操作
         if (follow == null && isFollowed == 1) {
             // 添加关注信息
-            follow = new TFollow();
+            follow = new Follow();
             follow.setUserId(userId);
             follow.setFollowUserId(followUserId);
             boolean flag = save(follow);
@@ -101,7 +101,7 @@ public class TFollowServiceImpl extends ServiceImpl<TFollowMapper, TFollow> impl
     }
 
     @Override
-    public Dict findCommonsFriends(TFollow tFollow) {
+    public Dict findCommonsFriends(Follow tFollow) {
         Integer followUserId = tFollow.getFollowUserId();
         Integer userId = tFollow.getUserId();
         // 是否选择了关注对象
@@ -117,7 +117,7 @@ public class TFollowServiceImpl extends ServiceImpl<TFollowMapper, TFollow> impl
         if (ids == null || ids.isEmpty()) {
             return Dict.create().set("code", "200").set("msg", "查询成功").set("data", new ArrayList<>());
         } else {
-            List<TUser> list = tUserService.list(new LambdaQueryWrapper<TUser>().in(TUser::getId, ids));
+            List<User> list = tUserService.list(new LambdaQueryWrapper<User>().in(User::getId, ids));
             return Dict.create().set("code", "200").set("msg", "查询成功").set("data", list);
         }
     }
@@ -135,23 +135,23 @@ public class TFollowServiceImpl extends ServiceImpl<TFollowMapper, TFollow> impl
     }
 
     @Override
-    public Dict findFollowing(TFollow tFollow) {
+    public Dict findFollowing(Follow tFollow) {
         Integer userId = tFollow.getUserId();
         Set<Integer> ids = redisTemplate.opsForSet().members(Constant.REDIS_FOLLOWING_KEY + userId);
-        List<TUser> list = tUserService.list(new LambdaQueryWrapper<TUser>().in(TUser::getId, ids));
+        List<User> list = tUserService.list(new LambdaQueryWrapper<User>().in(User::getId, ids));
         return Dict.create().set("code", "200").set("msg", "查询成功").set("data", list);
     }
 
     @Override
-    public Dict findFollowers(TFollow tFollow) {
+    public Dict findFollowers(Follow tFollow) {
         Integer userId = tFollow.getUserId();
         Set<Integer> ids = redisTemplate.opsForSet().members(Constant.REDIS_FOLLOWERS_KEY + userId);
-        List<TUser> list = tUserService.list(new LambdaQueryWrapper<TUser>().in(TUser::getId, ids));
+        List<User> list = tUserService.list(new LambdaQueryWrapper<User>().in(User::getId, ids));
         return Dict.create().set("code", "200").set("msg", "查询成功").set("data", list);
     }
 
     @Override
-    public Dict isFollowed(TFollow tFollow) {
+    public Dict isFollowed(Follow tFollow) {
         Integer userId = tFollow.getUserId();
         Integer followUserId = tFollow.getFollowUserId();
         Boolean member = redisTemplate.opsForSet().isMember(Constant.REDIS_FOLLOWERS_KEY + followUserId, userId);

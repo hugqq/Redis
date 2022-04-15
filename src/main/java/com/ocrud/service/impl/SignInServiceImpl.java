@@ -9,7 +9,7 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.ocrud.service.SignInService;
-import com.ocrud.service.TUserPointsService;
+import com.ocrud.service.UserPointsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.core.RedisCallback;
@@ -28,7 +28,7 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private DefaultRedisScript redisScript;
     @Autowired
-    private TUserPointsService tUserPointsService;
+    private UserPointsService tUserPointsService;
 
     /**
      * 用户签到

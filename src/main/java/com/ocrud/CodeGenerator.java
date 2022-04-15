@@ -30,7 +30,7 @@ public class CodeGenerator {
     private static final String[] SUPERENTITYCOLUMNS = {"id","remarks", "create_by", "create_date", "update_by", "update_date", "del_flag"};
     private static final String PACKAGENAME = "com.ocrud";
     private static final String MODELNAME = "";//填写模块名
-    private static final String[] TABNAME = {"t_feeds"};//填写表名
+    private static final String[] TABNAME = {"t_restaurants"};//填写表名
     private static final String AUTHOR = "ocrud";
     private static final String PROJECTPATH ="C:\\Users\\33047\\IdeaProjects\\Redis\\src\\main\\java";
 
@@ -104,6 +104,7 @@ public class CodeGenerator {
                 .setSuperEntityClass(BaseEntity.class)
                 .setEntityLombokModel(true)
                 .setRestControllerStyle(true)
+                .setTablePrefix("t_")
                 // 写于父类中的公共字段
                 .setSuperEntityColumns(SUPERENTITYCOLUMNS)
                 .setCapitalMode(false)

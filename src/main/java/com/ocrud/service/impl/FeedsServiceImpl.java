@@ -8,9 +8,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ocrud.entity.BaseEntity;
 import com.ocrud.entity.Constant;
-import com.ocrud.entity.TUser;
-import com.ocrud.service.TFollowService;
-import com.ocrud.service.TUserService;
+import com.ocrud.entity.User;
+import com.ocrud.service.FollowService;
+import com.ocrud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,9 +18,9 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ocrud.entity.TFeeds;
-import com.ocrud.mapper.TFeedsMapper;
-import com.ocrud.service.TFeedsService;
+import com.ocrud.entity.Feeds;
+import com.ocrud.mapper.FeedsMapper;
+import com.ocrud.service.FeedsService;
 
 import java.util.Date;
 import java.util.List;
@@ -40,12 +40,12 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> implements TFeedsService {
+public class FeedsServiceImpl extends ServiceImpl<FeedsMapper, Feeds> implements FeedsService {
 
     @Autowired
-    private TFollowService tFollowService;
+    private FollowService followService;
     @Autowired
-    private TUserService tUserService;
+    private UserService userService;
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -62,7 +62,7 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
         // 请选择关注的好友
         Assert.isFalse(followingUserId == null || followingUserId < 1, "请选择关注的好友");
         // 获取关注/取关所有 Feed
-        List<TFeeds> followingFeeds = list(new LambdaQueryWrapper<TFeeds>().eq(TFeeds::getFkUserId, followingUserId));
+        List<Feeds> followingFeeds = list(new LambdaQueryWrapper<Feeds>().eq(Feeds::getFkUserId, followingUserId));
         if (followingFeeds == null || followingFeeds.isEmpty()) {
             return;
         }
@@ -90,14 +90,14 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
         Assert.isFalse(id == null || id < 1, "请选择要删除的Feed");
         // 获取登录用户
         // 获取 Feed 内容
-        TFeeds feeds = getById(id);
+        Feeds feeds = getById(id);
         // 判断 Feed 是否已被删除且只能删除自己的 Feed
         Assert.isFalse(feeds == null, "该Feed已被删除");
         Assert.isFalse(feeds.getFkUserId().equals(userId), "只能删除自己的Feed");
         // 删除
         if (removeById(id)) {
             // 将内容从粉丝的集合中删除  -- 异步消息队列优化
-            Set<Integer> followersIds = tFollowService.findFollowers(userId);
+            Set<Integer> followersIds = followService.findFollowers(userId);
             followersIds.forEach(follower -> {
                 String key = Constant.REDIS_FOLLOWING_FEEDS_KEY.concat(follower + "");
                 redisTemplate.opsForZSet().remove(key, feeds.getId());
@@ -114,7 +114,7 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
      * @param page 页码
      */
     @Override
-    public Page<TFeeds> selectForPage(Integer page, Integer pageSize, Integer userId) {
+    public Page<Feeds> selectForPage(Integer page, Integer pageSize, Integer userId) {
         if (page == null) {
             page = 1;
 
@@ -132,9 +132,9 @@ public class TFeedsServiceImpl extends ServiceImpl<TFeedsMapper, TFeeds> impleme
         if (feedIds == null || feedIds.isEmpty()) {
             return new Page<>();
         }
-        Map<Integer, TUser> userMap = tUserService.list().stream().collect(Collectors.toMap(TUser::getId, Function.identity()));
+        Map<Integer, User> userMap = userService.list().stream().collect(Collectors.toMap(User::getId, Function.identity()));
         // 查询结果
-        Page<TFeeds> result = page(new Page<>(page, pageSize), new LambdaQueryWrapper<TFeeds>().in(TFeeds::getId, feedIds));
+        Page<Feeds> result = page(new Page<>(page, pageSize), new LambdaQueryWrapper<Feeds>().in(Feeds::getId, feedIds));
         // 翻译字典
         result.getRecords().forEach(feed -> feed.setUser(userMap.get(feed.getFkUserId())));
         return result;

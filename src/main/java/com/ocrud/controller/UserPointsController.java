@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ocrud.entity.TUserPoints;
-import com.ocrud.service.TUserPointsService;
+import com.ocrud.entity.UserPoints;
+import com.ocrud.service.UserPointsService;
 
 import java.util.List;
 
@@ -26,21 +26,21 @@ import java.util.List;
 @Slf4j
 public class UserPointsController {
 
-    private final TUserPointsService tUserPointsService;
+    private final UserPointsService userPointsService;
 
     @Autowired
-    public UserPointsController(TUserPointsService tUserPointsService) {
-        this.tUserPointsService = tUserPointsService;
+    public UserPointsController(UserPointsService userPointsService) {
+        this.userPointsService = userPointsService;
     }
 
     @RequestMapping("pageList")
-    public Dict pageList(TUserPoints tUserPoints,
+    public Dict pageList(UserPoints tUserPoints,
                          @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                          @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                          HttpServletRequest request) {
         Dict r = Dict.create();
-        LambdaQueryWrapper<TUserPoints> lambdaQueryWrapper = new LambdaQueryWrapper<TUserPoints>();
-        Page<TUserPoints> page = tUserPointsService.page(new Page<>(pageNo, pageSize), lambdaQueryWrapper);
+        LambdaQueryWrapper<UserPoints> lambdaQueryWrapper = new LambdaQueryWrapper<UserPoints>();
+        Page<UserPoints> page = userPointsService.page(new Page<>(pageNo, pageSize), lambdaQueryWrapper);
         r.put("data", page);
         return r;
     }
@@ -54,7 +54,7 @@ public class UserPointsController {
         Assert.isFalse(userId == null || userId < 1, "用户不能为空");
         Assert.isFalse(points == null, "积分不能为空");
         Assert.isFalse(types == null, "请选择对应的积分类型");
-        return tUserPointsService.add(userId, points, types);
+        return userPointsService.add(userId, points, types);
     }
 
 
@@ -64,7 +64,7 @@ public class UserPointsController {
         // 基本参数校验
         Assert.isFalse(userId == null || userId < 1, "用户不能为空");
         Assert.isFalse(top == null || top < 1, "请输入排名数");
-        return tUserPointsService.findTopN(userId,top);
+        return userPointsService.findTopN(userId,top);
     }
 
     @RequestMapping("findTopNFromRedis")
@@ -72,7 +72,7 @@ public class UserPointsController {
         // 基本参数校验
         Assert.isFalse(userId == null || userId < 1, "用户不能为空");
         Assert.isFalse(top == null || top < 1, "请输入排名数");
-        return tUserPointsService.findTopNFromRedis(userId,top);
+        return userPointsService.findTopNFromRedis(userId,top);
     }
 
 

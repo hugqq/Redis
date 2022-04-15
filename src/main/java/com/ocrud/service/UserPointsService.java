@@ -4,12 +4,12 @@ package com.ocrud.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.ocrud.entity.PointsRankVO;
-import com.ocrud.entity.TUserPoints;
+import com.ocrud.entity.UserPoints;
 
 import java.util.List;
 
 
-public interface TUserPointsService extends IService<TUserPoints> {
+public interface UserPointsService extends IService<UserPoints> {
 
     Boolean add(Integer userId, Integer points, Integer types);
 

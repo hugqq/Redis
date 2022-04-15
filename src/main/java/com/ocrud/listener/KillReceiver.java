@@ -2,10 +2,10 @@ package com.ocrud.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ocrud.entity.Constant;
-import com.ocrud.entity.TOrders;
-import com.ocrud.entity.TVouchers;
-import com.ocrud.service.TOrdersService;
-import com.ocrud.service.TVouchersService;
+import com.ocrud.entity.Orders;
+import com.ocrud.entity.Vouchers;
+import com.ocrud.service.OrdersService;
+import com.ocrud.service.VouchersService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -23,16 +23,16 @@ import org.springframework.stereotype.Component;
 public class KillReceiver {
 
     @Autowired
-    private TVouchersService tVouchersService;
+    private VouchersService vouchersService;
     @Autowired
-    private TOrdersService tOrdersService;
+    private OrdersService ordersService;
 
     @SneakyThrows
     @RabbitHandler
     public void process(String msg) {
-        TVouchers tVouchers = tVouchersService.getById(msg);
-        tVouchers.setStockLeft(tVouchers.getStock() - tOrdersService.count(new LambdaQueryWrapper<TOrders>().eq(TOrders::getFkVoucherId, msg)));
-        log.info("Received voucher: {}", tVouchers);
-        tVouchersService.updateById(tVouchers);
+        Vouchers vouchers = vouchersService.getById(msg);
+        vouchers.setStockLeft(vouchers.getStock() - ordersService.count(new LambdaQueryWrapper<Orders>().eq(Orders::getFkVoucherId, msg)));
+        log.info("Received voucher: {}", vouchers);
+        vouchersService.updateById(vouchers);
     }
 }

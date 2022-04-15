@@ -39,7 +39,14 @@ public class NearMeServiceImpl implements NearMeService {
 
     /**
      * 获取附近的人
-     *
+     * 获取登录用户id
+     * 获取查询半径，以米为单位，默认1000m
+     * 获取用户的经纬度，如果客户端没上传经纬度，那么从Redis中读取经纬度
+     * 格式化查询的半径，使用RedisTemplate的Distance对象
+     * 查询限制条件：限制20，返回包含距离，按由近及远排序
+     * 格式化结果，将其封装到Map中，Key为dinerId，Value构建返回的VO，同时格式化distance属性，方便客户端展示
+     * 查询附近的人的信息，并添加到对应的VO中
+     * 返回结果
      * @param userId 登录
      * @param radius 半径(m)，默认1000m
      * @param lon    经度
@@ -93,7 +100,7 @@ public class NearMeServiceImpl implements NearMeService {
     }
     /**
      * 计算两点之间的距离
-     * GEODIST key 天安门 长城 [m|km|ft|mi]
+     * GEODIST key l1 l2 [m|km|ft|mi]
      */
     @Override
     public String distance(Integer userId, Integer toUserId) {

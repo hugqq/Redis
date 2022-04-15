@@ -1,9 +1,8 @@
 package com.ocrud.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.ocrud.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 @Data
@@ -12,7 +11,8 @@ import lombok.experimental.Accessors;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TFollow extends BaseEntity {
+@TableName("t_follow")
+public class Follow extends BaseEntity {
 
     /**
     * 用户

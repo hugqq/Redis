@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ocrud.entity.TUser;
-import com.ocrud.mapper.TUserMapper;
-import com.ocrud.service.TUserService;
+import com.ocrud.entity.User;
+import com.ocrud.mapper.UserMapper;
+import com.ocrud.service.UserService;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import com.ocrud.service.TUserService;
 
 @Transactional
 @Service
-public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements TUserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
 }
 

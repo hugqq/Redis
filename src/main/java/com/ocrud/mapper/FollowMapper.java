@@ -1,12 +1,12 @@
 package com.ocrud.mapper;
 
-import com.ocrud.entity.TUser;
+import com.ocrud.entity.Follow;
 import org.apache.ibatis.annotations.Mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 
 @Mapper
-public interface TUserMapper extends BaseMapper<TUser> {
+public interface FollowMapper extends BaseMapper<Follow> {
 
 }
 

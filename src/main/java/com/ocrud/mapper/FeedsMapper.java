@@ -1,12 +1,12 @@
 package com.ocrud.mapper;
 
-import com.ocrud.entity.TOrders;
+import com.ocrud.entity.Feeds;
 import org.apache.ibatis.annotations.Mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 
 @Mapper
-public interface TOrdersMapper extends BaseMapper<TOrders> {
+public interface FeedsMapper extends BaseMapper<Feeds> {
 
 }
 

@@ -3,9 +3,9 @@ package com.ocrud.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.ocrud.entity.Constant;
-import com.ocrud.entity.TVouchers;
-import com.ocrud.service.TSeckillVouchersService;
-import com.ocrud.service.TVouchersService;
+import com.ocrud.entity.Vouchers;
+import com.ocrud.service.SeckillVouchersService;
+import com.ocrud.service.VouchersService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,13 +20,13 @@ import java.util.Map;
 @RestController
 public class SnapUpController {
 
-    private final TSeckillVouchersService seckillVouchersService;
-    private final TVouchersService tVouchersService;
+    private final SeckillVouchersService seckillVouchersService;
+    private final VouchersService vouchersService;
     private final RedisTemplate redisTemplate;
 
-    public SnapUpController(TSeckillVouchersService seckillVouchersService, TVouchersService tVouchersService, RedisTemplate redisTemplate) {
+    public SnapUpController(SeckillVouchersService seckillVouchersService, VouchersService vouchersService, RedisTemplate redisTemplate) {
         this.seckillVouchersService = seckillVouchersService;
-        this.tVouchersService = tVouchersService;
+        this.vouchersService = vouchersService;
         this.redisTemplate = redisTemplate;
     }
 
@@ -37,11 +37,11 @@ public class SnapUpController {
      */
     @RequestMapping("/addVouchersCache")
     public void addVouchersCache(Integer seckillVouchersId, Integer voucherId) {
-        TVouchers tVouchers = tVouchersService.getById(voucherId);
+        Vouchers voucherss = vouchersService.getById(voucherId);
         String redisKey = "seckillVouchersId:" + seckillVouchersId + ":" + Constant.REDIS_VOUCHER_KEY + voucherId;
         Map<String, Object> seckillVoucherMaps = redisTemplate.opsForHash().entries(redisKey);
         if (CollUtil.isEmpty(seckillVoucherMaps)) {
-            seckillVoucherMaps = BeanUtil.beanToMap(tVouchers);
+            seckillVoucherMaps = BeanUtil.beanToMap(voucherss);
             redisTemplate.opsForHash().putAll(redisKey, seckillVoucherMaps);
         } else {
             throw new IllegalArgumentException("该券已经拥有了抢购活动");

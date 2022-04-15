@@ -3,10 +3,10 @@ package com.ocrud.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.ocrud.entity.TUser;
+import com.ocrud.entity.User;
 
 
-public interface TUserService extends IService<TUser> {
+public interface UserService extends IService<User> {
 
 }
 

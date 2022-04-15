@@ -1,5 +1,6 @@
 package com.ocrud.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.ocrud.entity.BaseEntity;
 import lombok.*;
 import lombok.EqualsAndHashCode;
@@ -11,19 +12,18 @@ import lombok.experimental.Accessors;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TUser extends BaseEntity {
+@TableName("t_user_points")
+public class UserPoints extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-    * 用户姓名
-    */
-    private String name;
+    private Integer fkUserId;
+
+    private Integer points;
 
     /**
-    * 伪token
+    * 积分类型：0=签到，1=关注好友，2=添加评论，3=点赞商户
     */
-    private String token;
-
+    private Integer types;
 
 }

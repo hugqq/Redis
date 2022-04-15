@@ -3,10 +3,10 @@ package com.ocrud.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.ocrud.entity.TSeckillVouchers;
+import com.ocrud.entity.SeckillVouchers;
 
 
-public interface TSeckillVouchersService extends IService<TSeckillVouchers> {
+public interface SeckillVouchersService extends IService<SeckillVouchers> {
 
     Boolean doSeckill(Integer seckillVouchersId, Integer userId);
 }

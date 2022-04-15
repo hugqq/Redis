@@ -12,9 +12,9 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ocrud.entity.TUserPoints;
-import com.ocrud.mapper.TUserPointsMapper;
-import com.ocrud.service.TUserPointsService;
+import com.ocrud.entity.UserPoints;
+import com.ocrud.mapper.UserPointsMapper;
+import com.ocrud.service.UserPointsService;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class TUserPointsServiceImpl extends ServiceImpl<TUserPointsMapper, TUserPoints> implements TUserPointsService {
+public class UserPointsServiceImpl extends ServiceImpl<UserPointsMapper, UserPoints> implements UserPointsService {
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -44,7 +44,7 @@ public class TUserPointsServiceImpl extends ServiceImpl<TUserPointsMapper, TUser
     @Override
     public Boolean add(Integer userId, Integer points, Integer types) {
         // 插入数据库
-        TUserPoints userPoints = new TUserPoints();
+        UserPoints userPoints = new UserPoints();
         userPoints.setFkUserId(userId);
         userPoints.setPoints(points);
         userPoints.setTypes(types);

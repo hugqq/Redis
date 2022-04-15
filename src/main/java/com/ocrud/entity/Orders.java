@@ -1,5 +1,6 @@
 package com.ocrud.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.ocrud.entity.BaseEntity;
 import lombok.*;
 import lombok.EqualsAndHashCode;
@@ -11,7 +12,8 @@ import lombok.experimental.Accessors;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TOrders extends BaseEntity {
+@TableName("t_orders")
+public class Orders extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

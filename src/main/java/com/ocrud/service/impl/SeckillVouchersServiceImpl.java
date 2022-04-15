@@ -7,9 +7,9 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ocrud.entity.Constant;
-import com.ocrud.entity.TOrders;
-import com.ocrud.entity.TVouchers;
-import com.ocrud.service.TOrdersService;
+import com.ocrud.entity.Orders;
+import com.ocrud.entity.Vouchers;
+import com.ocrud.service.OrdersService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -21,9 +21,9 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ocrud.entity.TSeckillVouchers;
-import com.ocrud.mapper.TSeckillVouchersMapper;
-import com.ocrud.service.TSeckillVouchersService;
+import com.ocrud.entity.SeckillVouchers;
+import com.ocrud.mapper.SeckillVouchersMapper;
+import com.ocrud.service.SeckillVouchersService;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.SQLException;
@@ -46,10 +46,10 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
-public class TSeckillVouchersServiceImpl extends ServiceImpl<TSeckillVouchersMapper, TSeckillVouchers> implements TSeckillVouchersService {
+public class SeckillVouchersServiceImpl extends ServiceImpl<SeckillVouchersMapper, SeckillVouchers> implements SeckillVouchersService {
 
     @Autowired
-    private TOrdersService tOrdersService;
+    private OrdersService ordersService;
     @Autowired
     private RedissonClient redisson;
     @Autowired
@@ -67,7 +67,7 @@ public class TSeckillVouchersServiceImpl extends ServiceImpl<TSeckillVouchersMap
         // 基本参数校验
         Assert.isFalse(seckillVouchersId == null || seckillVouchersId < 0, "请选择需要抢购的代金券");
         // 判断此代金券是否加入抢购
-        TSeckillVouchers seckillVouchers = getById(seckillVouchersId);
+        SeckillVouchers seckillVouchers = getById(seckillVouchersId);
         Assert.isFalse(seckillVouchers == null, "该代金券并未有抢购活动");
         // 判断是否有效
         Assert.isFalse(seckillVouchers.getIsValid() == 1, "该活动已结束");
@@ -78,13 +78,13 @@ public class TSeckillVouchersServiceImpl extends ServiceImpl<TSeckillVouchersMap
         Integer voucherId = seckillVouchers.getFkVoucherId();
         String redisKey = "seckillVouchersId:" + seckillVouchersId + ":" + Constant.REDIS_VOUCHER_KEY + voucherId;
         Map<String, Object> seckillVoucherMaps = redisTemplate.opsForHash().entries(redisKey);
-        TVouchers tVouchers = BeanUtil.mapToBean(seckillVoucherMaps, TVouchers.class, true, null);
+        Vouchers tVouchers = BeanUtil.mapToBean(seckillVoucherMaps, Vouchers.class, true, null);
         // 获取登录用户信息 如果userId不为空则模拟单一用户重复下单
         if (userId == null) {
             userId = Integer.valueOf(RandomUtil.randomNumbers(9));
         }
         // 判断登录用户是否已抢到(一个用户针对这次活动只能买一次)
-        TOrders order = tOrdersService.findDinerOrder(userId, seckillVouchers.getFkVoucherId());
+        Orders order = ordersService.findDinerOrder(userId, seckillVouchers.getFkVoucherId());
         Assert.isFalse(order != null, "该用户已抢到该代金券，无需再抢");
         String lockName = "seckillVouchersId:" + seckillVouchersId + Constant.REDIS_VOUCHER_KEY + voucherId + ":" + userId;
         // 加锁并设置失效时间
@@ -95,7 +95,7 @@ public class TSeckillVouchersServiceImpl extends ServiceImpl<TSeckillVouchersMap
             // 拿到锁
             if (lockFlag) {
                 // 下单
-                TOrders orders = new TOrders();
+                Orders orders = new Orders();
                 orders.setFkUserId(userId);
                 orders.setFkSeckillId(seckillVouchers.getId());
                 orders.setFkVoucherId(voucherId);
@@ -103,7 +103,7 @@ public class TSeckillVouchersServiceImpl extends ServiceImpl<TSeckillVouchersMap
                 orders.setOrderNo(orderNo);
                 orders.setOrderType(1);
                 orders.setStatus(0);
-                boolean save = tOrdersService.save(orders);
+                boolean save = ordersService.save(orders);
                 // 扣库存
                 List<String> keys = new ArrayList<>();
                 keys.add(redisKey);
