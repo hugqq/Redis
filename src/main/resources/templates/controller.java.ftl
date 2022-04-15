@@ -27,7 +27,6 @@ public class ${table.controllerName}  {
 
     private final ${table.serviceName} ${table.serviceName?uncap_first};
 
-    @Autowired
     public ${table.controllerName}(${table.serviceName} ${table.serviceName?uncap_first}){
         this.${table.serviceName?uncap_first} = ${table.serviceName?uncap_first};
     }
@@ -56,7 +55,7 @@ public class ${table.controllerName}  {
     }
 
     @GetMapping("getById")
-    public Dict getByid(String id, HttpServletRequest request)
+    public Dict getById(String id, HttpServletRequest request)
     {
         Dict r = Dict.create();
         ${entity} one = ${table.serviceName?uncap_first}.getById(id);

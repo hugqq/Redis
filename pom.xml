@@ -29,6 +29,8 @@
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <fastjson.version>1.2.56</fastjson.version>
         <freemarker.version>2.3.27-incubating</freemarker.version>
+        <redisson.version>3.17.0</redisson.version>
+        <javafaker.version>1.0.2</javafaker.version>
     </properties>
 
     <repositories>
@@ -147,7 +149,13 @@
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
-                <version>3.17.0</version>
+                <version>${redisson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>${javafaker.version}</version>
             </dependency>
         </dependencies>
 

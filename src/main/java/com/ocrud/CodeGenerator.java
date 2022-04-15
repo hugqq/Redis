@@ -1,7 +1,6 @@
 package com.ocrud;
 
 
-
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -23,23 +22,23 @@ import java.util.List;
 @Slf4j
 public class CodeGenerator {
 
-    private static final String DBURL = "jdbc:mysql://127.0.0.1:3306/redis?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8";
+    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/redis?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8";
     private static final String USERNAME = "root";
     private static final String PASSWD = "root";
-    private static final String DRIVERNAME = "com.mysql.cj.jdbc.Driver";
-    private static final String[] SUPERENTITYCOLUMNS = {"id","remarks", "create_by", "create_date", "update_by", "update_date", "del_flag"};
-    private static final String PACKAGENAME = "com.ocrud";
-    private static final String MODELNAME = "";//填写模块名
-    private static final String[] TABNAME = {"t_restaurants"};//填写表名
+    private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
+    private static final String[] SUPER_ENTITY_COLUMNS = {"id", "remarks", "create_by", "create_date", "update_by", "update_date", "del_flag"};
+    private static final String PACKAGE_NAME = "com.ocrud";
+    private static final String MODEL_NAME = "";
+    private static final String[] TAB_NAME = {"t_restaurants"};
     private static final String AUTHOR = "ocrud";
-    private static final String PROJECTPATH ="C:\\Users\\33047\\IdeaProjects\\Redis\\src\\main\\java";
+    private static final String PROJECT_PATH = "C:\\Users\\33047\\IdeaProjects\\Redis\\src\\main\\java";
 
 
     public static void main(String[] args) {
         generateByTables();
     }
+
     private static void generateByTables() {
-        log.info("=======================开始生成Java代码=======================");
         // 代码生成器
         AutoGenerator autoGenerator = new AutoGenerator();
 
@@ -48,22 +47,22 @@ public class CodeGenerator {
         config.setActiveRecord(true)
                 .setIdType(IdType.ASSIGN_UUID)
                 .setAuthor(CodeGenerator.AUTHOR)
-                .setOutputDir(PROJECTPATH)
+                .setOutputDir(PROJECT_PATH)
                 .setOpen(false)
                 .setFileOverride(true)
                 .setServiceName("%sService");
         // 数据源配置
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDbType(DbType.MYSQL)
-                .setUrl(DBURL)
+                .setUrl(DB_URL)
                 .setUsername(USERNAME)
                 .setPassword(PASSWD)
-                .setDriverName(DRIVERNAME);
+                .setDriverName(DRIVER_NAME);
         // 包配置
         PackageConfig packageConfig = new PackageConfig();
         packageConfig
-                .setModuleName(MODELNAME)
-                .setParent(PACKAGENAME)
+                .setModuleName(MODEL_NAME)
+                .setParent(PACKAGE_NAME)
                 .setController("controller")
                 .setService("service")
                 .setEntity("entity");
@@ -82,7 +81,7 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return PROJECTPATH + "/src/main/resources/mapper/" + MODELNAME
+                return PROJECT_PATH + "/src/main/resources/mapper/" + MODEL_NAME
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
@@ -106,22 +105,22 @@ public class CodeGenerator {
                 .setRestControllerStyle(true)
                 .setTablePrefix("t_")
                 // 写于父类中的公共字段
-                .setSuperEntityColumns(SUPERENTITYCOLUMNS)
+                .setSuperEntityColumns(SUPER_ENTITY_COLUMNS)
                 .setCapitalMode(false)
                 .setControllerMappingHyphenStyle(true)
                 // 修改替换成你需要的表名，多个表名传数组
-                .setInclude(TABNAME)
+                .setInclude(TAB_NAME)
                 .setSuperEntityClass(BaseEntity.class.getName())
                 .setSuperMapperClass(BaseMapper.class.getName())
                 .setSuperServiceClass(IService.class.getName())
                 .setSuperServiceImplClass(ServiceImpl.class.getName())
-                ;
+        ;
 
         autoGenerator
                 .setGlobalConfig(config)
                 .setDataSource(dataSourceConfig)
                 .setStrategy(strategyConfig)
-                .setPackageInfo(packageConfig )
+                .setPackageInfo(packageConfig)
                 .setTemplateEngine(new FreemarkerTemplateEngine())
                 .setTemplate(templateConfig).execute();
 

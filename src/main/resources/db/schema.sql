@@ -101,42 +101,42 @@ CREATE TABLE `t_user_points` (
 ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci AUTO_INCREMENT=1 ROW_FORMAT=COMPACT;
 
 
-DROP TABLE IF EXISTS `t_restaurants`;
-CREATE TABLE `t_restaurants` (
-                                 `id` INT ( 11 ) NOT NULL AUTO_INCREMENT,
-                                 `name` VARCHAR ( 100 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅英文名称',
-                                 `cnname` VARCHAR ( 100 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅中文名称',
-                                 `x` DOUBLE NULL DEFAULT NULL COMMENT '经度',
-                                 `y` DOUBLE NULL DEFAULT NULL COMMENT '纬度',
-                                 `location` VARCHAR ( 200 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '英文位置信息',
-                                 `cnlocation` VARCHAR ( 255 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '中文位置信息',
-                                 `area` VARCHAR ( 100 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商圈，比如徐家汇',
-                                 `telephone` VARCHAR ( 50 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅电话',
-                                 `email` VARCHAR ( 80 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅邮箱',
-                                 `website` VARCHAR ( 100 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅官网',
-                                 `cuisine` VARCHAR ( 80 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜系',
-                                 `average_price` VARCHAR ( 20 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '均价',
-                                 `introduction` VARCHAR ( 200 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '介绍',
-                                 `thumbnail` VARCHAR ( 120 ) CHARACTER
-                                     SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '缩略图',
-                                 `like_votes` INT ( 10 ) NULL DEFAULT 0 COMMENT '喜欢数量',
-                                 `dislike_votes` INT ( 10 ) NULL DEFAULT 0 COMMENT '不喜欢数量',
-                                 `city_id` INT ( 11 ) NULL DEFAULT 21 COMMENT '城市id',
-                                 `is_valid` INT ( 1 ) NULL DEFAULT 1 COMMENT '1=Valid 0=Invalid',
-                                 `create_date` datetime NULL DEFAULT NULL,
-                                 `update_date` datetime NULL DEFAULT NULL,
-                                 PRIMARY KEY ( `id` ),
-                                 INDEX `index_isvalid` ( `is_valid` ) USING BTREE
-)
-ENGINE = INNODB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_general_ci AUTO_INCREMENT = 1 ROW_FORMAT = COMPACT;
+-- DROP TABLE IF EXISTS `t_restaurants`;
+-- CREATE TABLE `t_restaurants` (
+--                                  `id` INT ( 11 ) NOT NULL AUTO_INCREMENT,
+--                                  `name` VARCHAR ( 100 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅英文名称',
+--                                  `cnname` VARCHAR ( 100 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅中文名称',
+--                                  `x` DOUBLE NULL DEFAULT NULL COMMENT '经度',
+--                                  `y` DOUBLE NULL DEFAULT NULL COMMENT '纬度',
+--                                  `location` VARCHAR ( 200 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '英文位置信息',
+--                                  `cnlocation` VARCHAR ( 255 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '中文位置信息',
+--                                  `area` VARCHAR ( 100 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商圈，比如徐家汇',
+--                                  `telephone` VARCHAR ( 50 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅电话',
+--                                  `email` VARCHAR ( 80 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅邮箱',
+--                                  `website` VARCHAR ( 100 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '餐厅官网',
+--                                  `cuisine` VARCHAR ( 80 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜系',
+--                                  `average_price` VARCHAR ( 20 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '均价',
+--                                  `introduction` VARCHAR ( 200 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '介绍',
+--                                  `thumbnail` VARCHAR ( 120 ) CHARACTER
+--                                      SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '缩略图',
+--                                  `like_votes` INT ( 10 ) NULL DEFAULT 0 COMMENT '喜欢数量',
+--                                  `dislike_votes` INT ( 10 ) NULL DEFAULT 0 COMMENT '不喜欢数量',
+--                                  `city_id` INT ( 11 ) NULL DEFAULT 21 COMMENT '城市id',
+--                                  `is_valid` INT ( 1 ) NULL DEFAULT 1 COMMENT '1=Valid 0=Invalid',
+--                                  `create_date` datetime NULL DEFAULT NULL,
+--                                  `update_date` datetime NULL DEFAULT NULL,
+--                                  PRIMARY KEY ( `id` ),
+--                                  INDEX `index_isvalid` ( `is_valid` ) USING BTREE
+-- )
+-- ENGINE = INNODB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_general_ci AUTO_INCREMENT = 1 ROW_FORMAT = COMPACT;

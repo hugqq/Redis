@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import com.ocrud.service.SignInService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +16,11 @@ import java.util.Map;
 @RestController
 public class SignInController {
 
-    @Autowired
-    private SignInService signInService;
+    private final SignInService signInService;
+
+    public SignInController(SignInService signInService) {
+        this.signInService = signInService;
+    }
 
     /**
      * 用户签到

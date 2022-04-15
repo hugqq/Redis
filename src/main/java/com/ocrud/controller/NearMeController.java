@@ -14,8 +14,12 @@ import java.util.List;
  */
 @RestController
 public class NearMeController {
-    @Autowired
-    private NearMeService nearMeService;
+
+    private final NearMeService nearMeService;
+
+    public NearMeController(NearMeService nearMeService) {
+        this.nearMeService = nearMeService;
+    }
 
     /**
      * 增加经纬度

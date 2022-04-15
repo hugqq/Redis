@@ -28,7 +28,6 @@ public class UserPointsController {
 
     private final UserPointsService userPointsService;
 
-    @Autowired
     public UserPointsController(UserPointsService userPointsService) {
         this.userPointsService = userPointsService;
     }

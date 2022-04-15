@@ -21,7 +21,13 @@ public class Constant {
     /**
      * points key
      */
-    public static final String REDIS_POINTS_KEY = "points";
+    public static final String REDIS_POINTS_KEY = "points:";
+
+    /**
+     * restaurants key
+     */
+    public static final String REDIS_RESTAURANTS_KEY = "restaurants";
+
     /**
      * location key
      */
